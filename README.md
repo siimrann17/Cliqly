@@ -52,9 +52,10 @@ PORT=3000
 **Run the Application**: Start the server by running npm start. The application will be accessible at http://localhost:3000.
 
 ## Future Enhancements
-Real-time notifications via WebSockets.
-Advanced analytics for campaign performance.
-Integration with external email and SMS gateways.
-Role-based access control for team collaboration.
+
+- Real-time notifications via WebSockets.
+- Advanced analytics for campaign performance.
+- Integration with external email and SMS gateways.
+- Role-based access control for team collaboration.
 
 Cliqly is your go-to solution for managing customer relationships and launching impactful campaigns, all from a simple yet robust interface. 🚀
