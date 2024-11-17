@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM Dashboard</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+  <header>
+    <h1>Cliqly</h1>
+    <div>
+      <div class="notification-button">
+        <a href="/notifications" class="btn">Notifications <sup class="notification-count">
+            <%= unreadNotificationCount %>
+          </sup></a>
+      </div>
+      <a href="/logout">Logout</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Horizontal Navigation -->
+    <div class="horizontal-nav">
+      <div class="horizontal-nav-item">Requests</div>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search ...">
+      </div>
+      <div class="horizontal-nav-item">
+        <a href="/dashboard/create">+ Add Request</a>
+      </div>
+    </div>
+
+    <!-- Requests Table -->
+    <div class="requests-table">
+      <h2>Requests</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Tag</th>
+            <th>Owner</th>
+            <th>Deadline</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="requestsTableBody">
+          <% requests.forEach(request=> { %>
+            <tr>
+              <td>
+                <%= request.id %>
+              </td>
+              <td>
+                <%= request.type %>
+              </td>
+              <td>
+                <%= request.name %>
+              </td>
+              <td>
+                <%= request.tag %>
+              </td>
+              <td>
+                <img src="<%= request.owner.profileImage %>" alt="Profile" class="profile-image">
+                <%= request.owner.name %>
+              </td>
+              <td>
+                <%= request.deadline.toISOString().slice(0, 10) %>
+              </td>
+              <td>
+                <%= request.status %>
+              </td>
+              <td>
+                <div class="action-icons">
+                  <a href="/dashboard/<%= request._id %>/edit">Edit</a>
+                  <form action="/dashboard/<%= request._id %>/delete" method="POST" class="delete-form">
+                    <button type="submit">Delete</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Audience Segments Section -->
+    <div class="audience-segments">
+      <h2>Audience Segments</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Conditions</th>
+            <th>Size</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (segments && segments.length> 0) { %>
+            <% segments.forEach(segment=> { %>
+              <tr>
+                <td>
+                  <%= segment.name %>
+                </td>
+                <td>
+                  <%= JSON.stringify(segment.conditions) %>
+                </td>
+                <td>
+                  <%= segment.size %>
+                </td>
+                <td>
+                  <%= new Date(segment.createdAt).toLocaleDateString() %>
+                </td>
+                <td>
+                  <div class="action-icons">
+                    <form action="/segments/<%= segment._id %>/delete" method="POST" class="delete-form">
+                      <button type="submit">Delete</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              <% }); %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="5">No audience segments found.</td>
+                  </tr>
+                  <% } %>
+        </tbody>
+      </table>
+      <div class="horizontal-nav-item">
+        <a href="/segments/create">+ Create Segment</a>
+      </div>
+    </div>
+
+    <div class="horizontal-nav-item">
+      <a href="/campaigns/create">+ Create Campaign</a>
+    </div>
+    <div class="horizontal-nav-item">
+      <a href="/campaigns/history">View Campaign History</a>
+    </div>
+
+
+  </main>
+
+  <script defer>
+    // Pass initial data to JavaScript
+    const requests = <%= JSON.stringify(requests) %>;
+    // Update dashboard function
+    const updateDashboard = (filteredRequests) => {
+      const requestsTableBody = document.getElementById('requestsTableBody');
+      requestsTableBody.innerHTML = ''; // Clear existing rows
+
+      // Populate rows dynamically
+      filteredRequests.forEach(request => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${request.id}</td>
+          <td>${request.type}</td>
+          <td>${request.name}</td>
+          <td>${request.tag}</td>
+          <td>
+            <img src="${request.owner.profileImage}" alt="Profile" class="profile-image">
+            ${request.owner.name}
+          </td>
+          <td>${request.deadline.slice(0, 10)}</td>
+          <td>${request.status}</td>
+          <td>
+            <div class="action-icons">
+              <a href="/dashboard/${request._id}/edit">Edit</a>
+              <form action="/dashboard/${request._id}/delete" method="POST" class="delete-form">
+                <button type="submit">Delete</button>
+              </form>
+            </div>
+          </td>
+        `;
+        requestsTableBody.appendChild(tr);
+      });
+    };
+
+    // Initial render
+    updateDashboard(requests);
+
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', () => {
+      const searchQuery = searchInput.value.trim().toLowerCase();
+      if (searchQuery) {
+        const filteredRequests = requests.filter(request =>
+          Object.values(request).some(value =>
+            String(value).toLowerCase().includes(searchQuery)
+          )
+        );
+        updateDashboard(filteredRequests);
+      } else {
+        updateDashboard(requests);
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign History</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+
+<body>
+    <header>
+        <h1>Campaign History</h1>
+    </header>
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Audience Segment</th>
+                    <th>Message Template</th>
+                    <th>Sent</th>
+                    <th>Failed</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (campaigns && campaigns.length> 0) { %>
+                    <% campaigns.forEach(campaign=> { %>
+                        <tr>
+                            <td>
+                                <%= campaign.name %>
+                            </td>
+                            <td>
+                                <% if (campaign.segmentId) { %>
+                                    <%= campaign.segmentId.name %> (Size: <%= campaign.segmentId.size %>)
+                                            <% } else { %>
+                                                <em>Segment Not Found</em>
+                                                <% } %>
+                            </td>
+                            <td>
+                                <%= campaign.messageTemplate %>
+                            </td>
+                            <td>
+                                <%= campaign.sentCount %>
+                            </td>
+                            <td>
+                                <%= campaign.failedCount %>
+                            </td>
+                            <td>
+                                <%= new Date(campaign.createdAt).toLocaleString() %>
+                            </td>
+                        </tr>
+                        <% }); %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="6">No campaigns found.</td>
+                                </tr>
+                                <% } %>
+            </tbody>
+        </table>
+    </main>
+</body>
+
+</html>

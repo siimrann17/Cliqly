@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Campaign</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+
+<body>
+    <header>
+        <h1>Create Campaign</h1>
+    </header>
+    <main>
+        <form action="/campaigns/create" method="POST">
+            <label for="name">Campaign Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="segmentId">Select Audience Segment:</label>
+            <select id="segmentId" name="segmentId" required>
+                <% segments.forEach(segment=> { %>
+                    <option value="<%= segment._id %>">
+                        <%= segment.name %> (Size: <%= segment.size %>)
+                    </option>
+                    <% }); %>
+            </select>
+
+            <label for="messageTemplate">Message Template:</label>
+            <textarea id="messageTemplate" name="messageTemplate" rows="4" required></textarea>
+
+            <button type="submit">Create Campaign</button>
+        </form>
+    </main>
+</body>
+
+</html>

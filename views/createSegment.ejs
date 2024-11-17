@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Audience Segment</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+
+<body>
+    <header>
+        <h1>Create Audience Segment</h1>
+    </header>
+    <main>
+        <form action="/segments/create" method="POST">
+            <label for="name">Segment Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <h3>Conditions</h3>
+            <label for="spending">Spending Greater Than:</label>
+            <input type="number" id="spending" name="conditions[spending]">
+
+            <label for="visits">Visits Less Than or Equal To:</label>
+            <input type="number" id="visits" name="conditions[visits]">
+
+            <label for="inactivityDays">Inactive for Days:</label>
+            <input type="number" id="inactivityDays" name="conditions[inactivityDays]">
+
+            <button type="submit">Create Segment</button>
+        </form>
+    </main>
+</body>
+
+</html>
