@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send Messages</title>
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+
+<body>
+  <header>
+    <h1>Send Personalized Messages</h1>
+  </header>
+  <main>
+    <form action="/api/messages/send-messages" method="POST">
+      <label for="audience">Enter Audience JSON:</label>
+      <textarea id="audience" name="audience" rows="10" required>
+[
+  { "name": "John Doe", "audienceId": "6439df63c8b6364895d6aba4" },
+  { "name": "Jane Smith", "audienceId": "7439df63c8b6364895d6aba5" }
+]
+      </textarea>
+      <button type="submit">Send Messages</button>
+    </form>
+  </main>
+</body>
+
+</html>

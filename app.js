@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
-
+const messageRoutes = require('./routes/messages');
 const indexRoutes = require('./routes/index');
 const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard');
@@ -109,6 +109,7 @@ app.use('/dashboard', dashboardRoutes);
 app.use("/api/data", dataRoutes);
 app.use("/segments", segmentRoutes);
 app.use("/campaigns", campaignRoutes);
+app.use('/api/messages', messageRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3000;
