@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
 
 const communicationLogSchema = new mongoose.Schema({
-  audienceId: mongoose.Schema.Types.ObjectId, // Reference to an Audience Segment or related entity
-  name: String, // Name of the person in the audience
-  message: String, // Personalized message
-  status: { type: String, enum: ['PENDING', 'SENT', 'FAILED'], default: 'PENDING' },
-  deliveryStatus: { type: String, enum: ['DELIVERED', 'NOT_DELIVERED'], default: null },
+  audienceId: { type: String, required: true },
+  name: { type: String, required: true },
+  message: { type: String, required: true },
+  deliveryStatus: {
+    type: String,
+    enum: ['PENDING', 'SENT', 'FAILED'],
+    default: 'PENDING', // Set default value to 'PENDING'
+  },
   createdAt: { type: Date, default: Date.now },
 });
 
